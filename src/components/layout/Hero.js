@@ -25,7 +25,7 @@ export default function Hero() {
       
       <div className="relative">
         <Image
-          src="/gourmet4.jpg"
+          src="/gourmet2.jpg"
           alt="food"
           fill
           objectFit="contain"
