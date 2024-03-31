@@ -4,7 +4,7 @@ export default function Header() {
   return (
 <header className="flex items-center justify-between">
 <nav className="items-center flex gap-8 text-gray-500 font-semibold">
-<Link className="text-primary font-semibold text-2xl" href="/">GOURMET GO</Link>
+<Link className="text-secondary font-semibold text-2xl" href="/">GOURMET GO</Link>
   <Link href="/">Home</Link>
   <Link href="">Menu</Link>
   <Link href="">About</Link>
