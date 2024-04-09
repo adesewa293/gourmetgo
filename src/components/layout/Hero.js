@@ -16,7 +16,7 @@ export default function Hero() {
           Order now
           <Right />
         </button>
-        <button className="flex gap-2 py-2 text-gray-600 font-semibold items-center">
+        <button className="flex border-0 gap-2 py-2 text-gray-600 font-semibold items-center">
           Learn more
           <Right />
           </button>
