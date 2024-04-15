@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import { User } from "@/app/models/User";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from 'bcryptjs';
+
 
 const handler = NextAuth({
   secret: process.env.SECRET,
@@ -11,8 +13,8 @@ const handler = NextAuth({
       id: "credentials",
       credentials: {
         username: {
-          label: "Username",
-          type: "text",
+          label: "Email",
+          type: "email",
           placeholder: "test@example.com",
         },
         password: { label: "Password", type: "password" },
