@@ -4,7 +4,6 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 
-
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,10 +11,10 @@ export default function LoginPage() {
   async function handleFormSubmit(event) {
     event.preventDefault();
     setLoginInProgress(true);
-    await signIn('credentials', {email, password});
+    await signIn("credentials", { email, password, callbackUrl:'/'});
     setLoginInProgress(false);
   }
- 
+
   return (
     <section className="mt-8">
       <h1 className="text-center text-primary text-4xl mb-4">Login</h1>
@@ -36,11 +35,16 @@ export default function LoginPage() {
           disabled={loginInProgress}
           onChange={(event) => setPassword(event.target.value)}
         />
-        <button disabled={loginInProgress}  type="submit">Login</button>
+        <button disabled={loginInProgress} type="submit">
+          Login
+        </button>
         <div className="my-4 text-center text-gray-500">
           or login with provider
         </div>
-        <button className="flex gap-4 justify-center">
+        <button
+          onClick={() => signIn("google", {callbackUrl:'/'})}
+          className="flex gap-4 justify-center"
+        >
           <Image
             src={"/google-icon.png"}
             alt={"google-icon"}
