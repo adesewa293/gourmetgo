@@ -64,7 +64,9 @@ export default function RegisterPage() {
         <div className="my-4 text-center text-gray-500">
           or login with provider
         </div>
-        <button className="flex gap-4 justify-center">
+        <button 
+        onClick={() => signIn("google", {callbackUrl:'/'})}
+        className="flex gap-4 justify-center">
           <Image
             src={"/google-icon.png"}
             alt={"google-icon"}
