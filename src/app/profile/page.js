@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { redirect } from "next/dist/server/api-utils";
 
 
+
 export default function profilePage() {
   const session = useSession();
   const {status} = session;
@@ -21,6 +22,7 @@ export default function profilePage() {
       <form className="max-w-xs mx-auto border">
         <div>
           <Image src={userImage} width={64} height={64} alt={avatar} />
+          <div>{userImage}</div>
         </div>
       </form>
     </section>
