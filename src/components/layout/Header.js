@@ -28,7 +28,7 @@ export default function Header() {
         {status === "authenticated" && (
           <>
           <Link href={'/profile'} className="whitespace-nowrap">
-          welcome, {userName}
+          Hello, {userName}!
           </Link>
            <button
             onClick={() => signOut()}
