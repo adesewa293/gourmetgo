@@ -7,25 +7,31 @@ import { useEffect, useState } from "react";
 
 export default function profilePage() {
   const session = useSession();
-  const [userName, setUserName] = useState('');
+  const [userName, setUserName] = useState("");
+  const [saved, setSaved] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const { status } = session;
 
-useEffect(() => {
-  if (status === 'authenticated'){
-    setUserName(session.data.user.name)
+  useEffect(() => {
+    if (status === "authenticated") {
+      setUserName(session.data.user.name);
+    }
+  }, [session, status]);
+
+  async function handleProfileInfoUpdate(event) {
+    event.preventDefault();
+    setSaved(false);
+    setIsSaving(true);
+    const response = await fetch("/api/profile", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: userName }),
+    });
+    setIsSaving(false);
+    if (response.ok) {
+      setSaved(true);
+    }
   }
-}, [session, status])
-
-
-async function handleProfileInfoUpdate(event){
-event.preventDefault();
-const response = await fetch('/api/profile', {
-  method: 'PUT',
-  headers: {'Content-Type': 'application/json'},
-  body: JSON.stringify({name:userName}),
-})
-}
-
 
   if (status === "loading") {
     return "Loading...";
@@ -38,6 +44,16 @@ const response = await fetch('/api/profile', {
     <section className="mt-8">
       <h1 className="text-center text-primary text-4xl mb-4">Profile</h1>
       <div className="max-w-md mx-auto">
+        {saved && (
+          <h2 className="text-center bg-green-100 rounded-lg border border-green-300 p-4">
+            Profile saved!
+          </h2>
+        )}
+        {isSaving && (
+          <h2 className="text-center bg-blue-100 rounded-lg border border-blue-300 p-4">
+          Saving...
+        </h2>
+        )}
         <div className="flex gap-4 items-center">
           <div>
             <div className="p-2 rounded-lg relative">
@@ -53,8 +69,17 @@ const response = await fetch('/api/profile', {
             </div>
           </div>
           <form className="grow" onSubmit={handleProfileInfoUpdate}>
-            <input type="text" placeholder="first and lastname" value={userName} onChange={event => setUserName(event.target.value)}/>
-            <input type="email" disabled={true} value={session.data.user.email} />
+            <input
+              type="text"
+              placeholder="first and lastname"
+              value={userName}
+              onChange={(event) => setUserName(event.target.value)}
+            />
+            <input
+              type="email"
+              disabled={true}
+              value={session.data.user.email}
+            />
             <button type="submit">Save</button>
           </form>
         </div>
