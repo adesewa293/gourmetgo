@@ -32,7 +32,18 @@ export default function profilePage() {
       setSaved(true);
     }
   }
-
+async function handleFileChange(event){
+const files = event.target.files;
+if (files?.length === 1 ){
+  const data = new FormData;
+  data.set = ('file', files[0]);
+await fetch('/api/upload', {
+  method: 'POST',
+  body: data,
+  // headers: {'Content-Type': 'multipart/form-data'}
+})
+}
+}
   if (status === "loading") {
     return "Loading...";
   }
@@ -51,8 +62,8 @@ export default function profilePage() {
         )}
         {isSaving && (
           <h2 className="text-center bg-blue-100 rounded-lg border border-blue-300 p-4">
-          Saving...
-        </h2>
+            Saving...
+          </h2>
         )}
         <div className="flex gap-4 items-center">
           <div>
@@ -64,8 +75,10 @@ export default function profilePage() {
                 height={250}
                 alt={"avatar"}
               />
-
-              <button type="button">Edit</button>
+              <label>
+                <input type="file" className="hidden" onChange={handleFileChange}/>
+                <span className="block border border-gray-300 rounded-lg p-2 text-center cursor-pointer">Edit</span>
+              </label>
             </div>
           </div>
           <form className="grow" onSubmit={handleProfileInfoUpdate}>
