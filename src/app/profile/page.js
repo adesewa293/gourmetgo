@@ -40,7 +40,6 @@ if (files?.length === 1 ){
 await fetch('/api/upload', {
   method: 'POST',
   body: data,
-  // headers: {'Content-Type': 'multipart/form-data'}
 })
 }
 }
