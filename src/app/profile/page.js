@@ -70,8 +70,8 @@ await fetch('/api/upload', {
               <Image
                 className="rounded-lg w-full h-full mb-1"
                 src={userImage}
-                width={250}
-                height={250}
+                width={300}
+                height={300}
                 alt={"avatar"}
               />
               <label>
