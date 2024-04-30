@@ -70,8 +70,8 @@ export default function RegisterPage() {
           <Image
             src={"/google-icon.png"}
             alt={"google-icon"}
-            width={24}
-            height={24}
+            width={25}
+            height={25}
           />
           Login with google
         </button>
