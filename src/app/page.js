@@ -15,8 +15,7 @@ export default function Home() {
             restaurants effortlessly with GourmetGo. We’re committed to bringing
             you delicious meals and exceptional dining experiences right to your
             doorstep. Explore, order, and enjoy—GourmetGo is your gateway to
-            culinary delight. sodales metus pulvinar bibendum. Mauris tincidunt
-            ullamcorper neque.
+            culinary delight.
           </p>
           <p>
             {" "}
