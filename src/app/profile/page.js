@@ -35,8 +35,9 @@ export default function profilePage() {
 async function handleFileChange(event){
 const files = event.target.files;
 if (files?.length === 1 ){
-  const data = new FormData;
-  data.set = ('file', files[0]);
+  const data = new FormData();
+  data.set('file', files[0]);
+  console.log('data', data)
 await fetch('/api/upload', {
   method: 'POST',
   body: data,
