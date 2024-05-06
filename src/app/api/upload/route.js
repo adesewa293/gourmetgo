@@ -31,7 +31,7 @@ export async function POST(req) {
         new PutObjectCommand({
           Bucket: bucket,
           Key: newFileName,
-          ACL: "public_read",
+          ACL: "public-read",
           ContentType: file.type,
           Body: buffer,
         })
