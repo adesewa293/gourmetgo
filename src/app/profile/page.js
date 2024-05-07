@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 export default function profilePage() {
   const session = useSession();
   const [userName, setUserName] = useState("");
+  const [image, setImage] = useState("");
   const [saved, setSaved] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const { status } = session;
@@ -15,6 +16,7 @@ export default function profilePage() {
   useEffect(() => {
     if (status === "authenticated") {
       setUserName(session.data.user.name);
+      setImage(session.data.user.image);
     }
   }, [session, status]);
 
@@ -32,25 +34,26 @@ export default function profilePage() {
       setSaved(true);
     }
   }
-async function handleFileChange(event){
-const files = event.target.files;
-if (files?.length === 1 ){
-  const data = new FormData();
-  data.set('file', files[0]);
-  console.log('data', data)
-await fetch('/api/upload', {
-  method: 'POST',
-  body: data,
-})
-}
-}
+  async function handleFileChange(event) {
+    const files = event.target.files;
+    if (files?.length === 1) {
+      const data = new FormData();
+      data.set("file", files[0]);
+      console.log("data", data);
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: data,
+      });
+      const link = await response.json();
+      setImage(link);
+    }
+  }
   if (status === "loading") {
     return "Loading...";
   }
   if (status === "unauthenticated") {
     return redirect("/login");
   }
-  const userImage = session.data.user.image;
   return (
     <section className="mt-8">
       <h1 className="text-center text-primary text-4xl mb-4">Profile</h1>
@@ -68,16 +71,25 @@ await fetch('/api/upload', {
         <div className="flex gap-4 items-center">
           <div>
             <div className="p-2 rounded-lg relative">
-              <Image
-                className="rounded-lg w-full h-full mb-1"
-                src={userImage}
-                width={250}
-                height={250}
-                alt={"avatar"}
-              />
+              {image && (
+                <Image
+                  className="rounded-lg w-full h-full mb-1"
+                  src={image}
+                  width={250}
+                  height={250}
+                  alt={"avatar"}
+                />
+              )}
+
               <label>
-                <input type="file" className="hidden" onChange={handleFileChange}/>
-                <span className="block border border-gray-300 rounded-lg p-2 text-center cursor-pointer">Edit</span>
+                <input
+                  type="file"
+                  className="hidden"
+                  onChange={handleFileChange}
+                />
+                <span className="block border border-gray-300 rounded-lg p-2 text-center cursor-pointer">
+                  Edit
+                </span>
               </label>
             </div>
           </div>
