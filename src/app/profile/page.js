@@ -70,7 +70,7 @@ export default function profilePage() {
             Saving...
           </h2>
         )}
-        {setIsUploading && (
+        {isUploading && (
           <h2 className="text-center bg-blue-100 rounded-lg border border-blue-300 p-4">
           Uploading...
         </h2>
