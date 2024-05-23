@@ -80,7 +80,7 @@ export default function profilePage() {
             <div className="p-2 rounded-lg relative max-w-[120px]">
               {image && (
                 <Image
-                  className="rounded-lg w-full h-full mb-2"
+                  className="rounded-lg w-full h-full mb-1"
                   src={image}
                   width={250}
                   height={250}
