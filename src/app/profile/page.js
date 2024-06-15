@@ -51,7 +51,7 @@ export default function profilePage() {
     }
   }
   if (status === "loading") {
-    return "Loading...";
+    return "Loading....";
   }
   if (status === "unauthenticated") {
     return redirect("/login");
