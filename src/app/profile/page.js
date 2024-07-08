@@ -1,5 +1,7 @@
 "use client";
 
+import InfoBox from "@/components/layout/InfoBox";
+import SuccessBox from "@/components/layout/SuccessBox";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/dist/server/api-utils";
 import Image from "next/image";
@@ -51,7 +53,7 @@ export default function profilePage() {
     }
   }
   if (status === "loading") {
-    return "Loading....";
+    return "Loading...";
   }
   if (status === "unauthenticated") {
     return redirect("/login");
@@ -61,20 +63,14 @@ export default function profilePage() {
       <h1 className="text-center text-primary text-4xl mb-4">Profile</h1>
       <div className="max-w-md mx-auto">
         {saved && (
-          <h2 className="text-center bg-green-100 rounded-lg border border-green-300 p-4">
+           <SuccessBox>
             Profile saved!
-          </h2>
+
+           </SuccessBox>
+
         )}
-        {isSaving && (
-          <h2 className="text-center bg-blue-100 rounded-lg border border-blue-300 p-4">
-            Saving...
-          </h2>
-        )}
-        {isUploading && (
-          <h2 className="text-center bg-blue-100 rounded-lg border border-blue-300 p-4">
-          Uploading...
-        </h2>
-        )}
+        {isSaving && <InfoBox>Saving...</InfoBox>}
+        {isUploading && <InfoBox>Uploading...</InfoBox>}
         <div className="flex gap-4 items-center">
           <div>
             <div className="p-2 rounded-lg relative max-w-[120px]">
