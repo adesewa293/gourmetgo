@@ -12,12 +12,30 @@ export default function profilePage() {
   const session = useSession();
   const [userName, setUserName] = useState("");
   const [image, setImage] = useState("");
+  const [phone, setPhone] = useState("");
+  const [streetAddress, setStreetAddress] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
+
+
   const { status } = session;
 
   useEffect(() => {
     if (status === "authenticated") {
       setUserName(session.data.user.name);
       setImage(session.data.user.image);
+      fetch ('/api/profile').then(response => {
+        response.json().then(data => {
+          setPhone(data.phone);
+          setStreetAddress(data.streetAddress);
+          setPostalCode(data.postalCode);
+          setCity(data.city);
+          setCountry(data.country)
+
+
+        })
+      })
     }
   }, [session, status]);
 
@@ -27,15 +45,15 @@ export default function profilePage() {
       const response = await fetch("/api/profile", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: userName, image }),
+        body: JSON.stringify({ name: userName, image, streetAddress, phone, postalCode, city, country }),
       });
       if (response.ok) resolve();
       else reject();
     });
-  await toast.promise(savingPromise, {
-      loading: 'Saving...',
-      success: 'Profile saved!',
-      error: 'Error'
+    await toast.promise(savingPromise, {
+      loading: "Saving...",
+      success: "Profile saved!",
+      error: "Error",
     });
   }
   async function handleFileChange(event) {
@@ -44,25 +62,23 @@ export default function profilePage() {
       const data = new FormData();
       data.set("file", files[0]);
 
-     const uploadPromise = new Promise (async (resolve, reject)=> {
-      const response = await fetch("/api/upload", {
+      const uploadPromise = fetch("/api/upload", {
         method: "POST",
         body: data,
+      }).then((response) => {
+        if (response.ok) {
+          return response.json().then((link) => {
+            setImage(link);
+          });
+        }
+        throw new Error("Something went wrong");
       });
-      if (response.ok){
-        const link = await response.json();
-        setImage(link);
-        resolve();
-      }else {
-        reject();
-      }
-     });
-     await toast.promise(uploadPromise,{
-      loading: 'Uploading...',
-      success: 'Upload complete!',
-      error: 'Upload error',
-     })
-      
+
+      await toast.promise(uploadPromise, {
+        loading: "Uploading...",
+        success: "Upload complete!",
+        error: "Upload error",
+      });
     }
   }
   if (status === "loading") {
@@ -75,7 +91,7 @@ export default function profilePage() {
     <section className="mt-8">
       <h1 className="text-center text-primary text-4xl mb-4">Profile</h1>
       <div className="max-w-md mx-auto">
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-4">
           <div>
             <div className="p-2 rounded-lg relative max-w-[120px]">
               {image && (
@@ -101,6 +117,7 @@ export default function profilePage() {
             </div>
           </div>
           <form className="grow" onSubmit={handleProfileInfoUpdate}>
+            <label>First and lastname</label>
             <input
               type="text"
               placeholder="first and lastname"
@@ -109,9 +126,19 @@ export default function profilePage() {
             />
             <input
               type="email"
+              placeholder="Email"
               disabled={true}
               value={session.data.user.email}
             />
+            <input type="tel" placeholder="Phone number" value={phone} onChange={ev => setPhone(ev.target.value)} />
+            <input type="text" placeholder="Street address" value={streetAddress} onChange={ev => setStreetAddress(ev.target.value)}/>
+            <div className="flex gap-2">
+              <input style={{'margin':'0'}} type="text" placeholder="Postal code" value={postalCode} onChange={ev => setPostalCode(ev.target.value)} />
+              <input style={{'margin':'0'}} type="text" placeholder="City" value={city} onChange={ev => setCity(ev.target.value)} />
+            </div>
+
+            <input type="text" placeholder="Country" value={country} onChange={ev => setCountry(ev.target.value)} />
+
             <button type="submit">Save</button>
           </form>
         </div>
