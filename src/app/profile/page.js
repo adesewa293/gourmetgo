@@ -124,13 +124,19 @@ export default function profilePage() {
               value={userName}
               onChange={(event) => setUserName(event.target.value)}
             />
+            <label>Email</label>
+
             <input
               type="email"
-              placeholder="Email"
+              placeholder={"Email"}
               disabled={true}
               value={session.data.user.email}
             />
+            <label>Phone number</label>
+
             <input type="tel" placeholder="Phone number" value={phone} onChange={ev => setPhone(ev.target.value)} />
+            <label>streetAddress</label>
+
             <input type="text" placeholder="Street address" value={streetAddress} onChange={ev => setStreetAddress(ev.target.value)}/>
             <div className="flex gap-2">
               <input style={{'margin':'0'}} type="text" placeholder="Postal code" value={postalCode} onChange={ev => setPostalCode(ev.target.value)} />
