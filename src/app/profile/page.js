@@ -7,6 +7,8 @@ import { redirect } from "next/dist/server/api-utils";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import Link from 'next/link'
+import UserTabs from "@/components/layout/UserTabs";
 
 export default function profilePage() {
   const session = useSession();
@@ -17,7 +19,8 @@ export default function profilePage() {
   const [postalCode, setPostalCode] = useState("");
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
-
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [profileFetched, setProfileFetched] = useState(false);
 
   const { status } = session;
 
@@ -25,17 +28,17 @@ export default function profilePage() {
     if (status === "authenticated") {
       setUserName(session.data.user.name);
       setImage(session.data.user.image);
-      fetch ('/api/profile').then(response => {
-        response.json().then(data => {
+      fetch("/api/profile").then((response) => {
+        response.json().then((data) => {
           setPhone(data.phone);
           setStreetAddress(data.streetAddress);
           setPostalCode(data.postalCode);
           setCity(data.city);
-          setCountry(data.country)
-
-
-        })
-      })
+          setCountry(data.country);
+          setIsAdmin(data.admin);
+          setProfileFetched(true)
+        });
+      });
     }
   }, [session, status]);
 
@@ -45,7 +48,15 @@ export default function profilePage() {
       const response = await fetch("/api/profile", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: userName, image, streetAddress, phone, postalCode, city, country }),
+        body: JSON.stringify({
+          name: userName,
+          image,
+          streetAddress,
+          phone,
+          postalCode,
+          city,
+          country,
+        }),
       });
       if (response.ok) resolve();
       else reject();
@@ -81,7 +92,7 @@ export default function profilePage() {
       });
     }
   }
-  if (status === "loading") {
+  if (status === "loading" || !profileFetched) {
     return "Loading...";
   }
   if (status === "unauthenticated") {
@@ -89,8 +100,8 @@ export default function profilePage() {
   }
   return (
     <section className="mt-8">
-      <h1 className="text-center text-primary text-4xl mb-4">Profile</h1>
-      <div className="max-w-md mx-auto">
+      <UserTabs isAdmin={isAdmin}  />
+      <div className="max-w-md mx-auto mt-8">
         <div className="flex gap-4">
           <div>
             <div className="p-2 rounded-lg relative max-w-[120px]">
@@ -134,16 +145,50 @@ export default function profilePage() {
             />
             <label>Phone number</label>
 
-            <input type="tel" placeholder="Phone number" value={phone} onChange={ev => setPhone(ev.target.value)} />
-            <label>streetAddress</label>
+            <input
+              type="tel"
+              placeholder="Phone number"
+              value={phone}
+              onChange={(ev) => setPhone(ev.target.value)}
+            />
+            <label>street Address</label>
 
-            <input type="text" placeholder="Street address" value={streetAddress} onChange={ev => setStreetAddress(ev.target.value)}/>
+            <input
+              type="text"
+              placeholder="Street address"
+              value={streetAddress}
+              onChange={(ev) => setStreetAddress(ev.target.value)}
+            />
             <div className="flex gap-2">
-              <input style={{'margin':'0'}} type="text" placeholder="Postal code" value={postalCode} onChange={ev => setPostalCode(ev.target.value)} />
-              <input style={{'margin':'0'}} type="text" placeholder="City" value={city} onChange={ev => setCity(ev.target.value)} />
-            </div>
+              <div>
+                <label>Postal Code</label>
 
-            <input type="text" placeholder="Country" value={country} onChange={ev => setCountry(ev.target.value)} />
+                <input
+                  type="text"
+                  placeholder="Postal code"
+                  value={postalCode}
+                  onChange={(ev) => setPostalCode(ev.target.value)}
+                />
+              </div>
+              <div>
+                <label>City</label>
+
+                <input
+                  type="text"
+                  placeholder="City"
+                  value={city}
+                  onChange={(ev) => setCity(ev.target.value)}
+                />
+              </div>
+            </div>
+            <label>Country</label>
+
+            <input
+              type="text"
+              placeholder="Country"
+              value={country}
+              onChange={(ev) => setCountry(ev.target.value)}
+            />
 
             <button type="submit">Save</button>
           </form>
