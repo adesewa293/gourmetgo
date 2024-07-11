@@ -1,12 +1,20 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useProfile } from "@/components/UseProfile";
 import UserTabs from "@/components/layout/UserTabs";
 import toast from "react-hot-toast";
 
 export default function CategoriesPage() {
   const [newCategoryName, setNewCategoryName] = useState('');
+  const [categories, setCategories] = useState([]);
   const { loading: profileLoading, data: profileData } = useProfile();
+
+  useEffect(() =>{
+    fetch('/api/categories').then(res => {res.json().then(categories => {
+      setCategories(categories)
+    });
+  });
+  }, [])
 
 async function handleNewCategorySubmit(ev){
 ev.preventDefault();
@@ -48,6 +56,13 @@ error: 'Error, sorry...',
           </div>
         </div>
       </form>
+     <div>
+      {categories?.length > 0 && categories.map(c => (
+      <div>
+        {c.name}
+      </div>
+      ))}
+     </div>
     </section>
   );
 }
