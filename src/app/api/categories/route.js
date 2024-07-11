@@ -5,4 +5,6 @@ import { Category } from "@/app/models/Category";
    const categoryDoc = await Category.create({name});
    return Response.json(categoryDoc );
  }
- 
+ export async function GET() {
+return Response.json(await Category.find())
+ }
