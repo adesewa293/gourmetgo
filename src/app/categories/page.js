@@ -10,11 +10,15 @@ export default function CategoriesPage() {
   const { loading: profileLoading, data: profileData } = useProfile();
 
   useEffect(() =>{
-    fetch('/api/categories').then(res => {res.json().then(categories => {
-      setCategories(categories)
-    });
-  });
+  fetchCategories();
   }, [])
+
+function fetchCategories(){
+  fetch('/api/categories').then(res => {res.json().then(categories => {
+    setCategories(categories)
+  });
+});
+}
 
 async function handleNewCategorySubmit(ev){
 ev.preventDefault();
@@ -24,6 +28,7 @@ const creationPromise = new Promise(async (resolve, reject) => {
     headers: {'Content-Type': 'application/json' },
     body: JSON.stringify({name: newCategoryName}),
   });
+  fetchCategories();
   if (response.ok)
     resolve();
   else reject();
