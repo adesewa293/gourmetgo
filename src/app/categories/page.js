@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useProfile } from "@/components/UseProfile";
 import UserTabs from "@/components/layout/UserTabs";
+import toast from "react-hot-toast";
 
 export default function CategoriesPage() {
   const [newCategoryName, setNewCategoryName] = useState('');
@@ -19,7 +20,11 @@ const creationPromise = new Promise(async (resolve, reject) => {
     resolve();
   else reject();
 });
-
+await toast.promise(creationPromise, {
+loading: 'Creating your new category...',
+success: 'Category created',
+error: 'Error, sorry...',
+});
 }
 
   if (profileLoading) {
