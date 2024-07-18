@@ -27,7 +27,7 @@ label + input {
 }
 button {
   @apply block w-full text-gray-700 font-semibold;
-  @apply border border-gray-300 rounded-xl px-8 py-4;
+  @apply border border-gray-300 rounded-xl px-6 py-2;
 }
 button[type="submit"],
 .submit {
