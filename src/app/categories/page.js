@@ -34,6 +34,7 @@ export default function CategoriesPage() {
       });
       setCategoryName("");
       fetchCategories();
+      setEditedCategory(null);
       if (response.ok) resolve();
       else reject();
     });
