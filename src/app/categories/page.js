@@ -38,8 +38,8 @@ export default function CategoriesPage() {
       else reject();
     });
     await toast.promise(creationPromise, {
-      loading: "Creating your new category...",
-      success: "Category created",
+      loading: editedCategory ? "Updating category": "Creating your new category...",
+      success: editedCategory ? "Category updated": "Category created",
       error: "Error, sorry...",
     });
   }
