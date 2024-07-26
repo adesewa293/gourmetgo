@@ -25,7 +25,7 @@ export default function CategoriesPage() {
   async function handleCategorySubmit(ev) {
     ev.preventDefault();
     const creationPromise = new Promise(async (resolve, reject) => {
-      const data = { name: categoryName };
+      const data = { name:CategoryName };
       if (editedCategory){data._id = editedCategory._id;}
       const response = await fetch("/api/categories", {
         method: editedCategory? "PUT" : "POST",
